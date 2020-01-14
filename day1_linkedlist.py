@@ -1,18 +1,11 @@
-"""
-Singly LinkedList implementation using Tail Pointer for better time complexity
-
-for pushback and popback in O(1) times rather then O(N) times
-
-"""
 class Node:
     def __init__(self,value):
         self.value = value
         self.next = None
 
-class SinglyLinkedList:
+class LinkedList:
     def __init__(self):
         self.head = None
-        self.tail = None
         self.size=0
 
     def pushFront(self,key):
@@ -23,57 +16,43 @@ class SinglyLinkedList:
             self.head=node
         else:
             self.head = node
-        if self.tail is None:
-            self.tail = self.head
         self.size+=1
 
     def pushBack(self,key):
         node = Node(key)
-        if self.tail is None:
+        currentnode = self.head
+
+        if currentnode is None:
             self.head = node
-            self.tail = node
-        else :
-            currenttail = self.tail
-            currenttail.next = node
-            self.tail = node
+            self.size +=1
+            return
+        while currentnode.next:
+            currentnode = currentnode.next
+        currentnode.next = node
         self.size += 1
 
     def popBack(self):
-        head = self.head
-        if self.tail is None:
-            raise Exception ("trying to remove from the empty list")
-        if self.head == self.tail:
+        currentnode = self.head
+        if currentnode.next is None:
             self.head = None
-            self.tail = None
-            self.size -= 1
-            return head.value
-        else :
-            while head.next.next is not None:
-                head = head.next
-            self.tail = head
-            popped =  head.next
-            head.next = None
-            self.size -= 1
-            return popped.value
-
-
+            return currentnode
+        while currentnode.next.next:
+            currentnode = currentnode.next
+        popped = currentnode.next
+        currentnode.next = None
+        self.size -= 1
+        return popped
 
     def top_front(self):
         return self.head.value
 
     def pop_front(self):
-        self.size -= 1
-        head = self.head
-        if self.tail is None :
-            raise Exception("Trying to pop from empty list")
-        if self.head ==  self.tail:
-            self.head = None
-            self.tail = None
-            return head.value
+        self.size += 1
         if self.head is not None:
-            self.head = head.next
-            return head.value
-
+            currenthead = self.head
+            self.head = self.head.next
+            return currenthead
+        return None
 
     def print_linkedList(self):
         currentnode = self.head
@@ -144,23 +123,14 @@ class SinglyLinkedList:
                 return
             currentnode =  currentnode.next
 
-ll = SinglyLinkedList()
-ll.pushFront(7)
+ll = LinkedList()
 
-ll.pushFront(14)
-ll.pushFront(102)
-ll.pushBack(1000)
+ll.pushFront(10)
+ll.pushFront(20)
+ll.pushFront(30)
 
-# print(ll.popBack())
-# print(ll.pop_front())
-# print(ll.popBack())
-# print(ll.pop_front())
-#
-# print("**")
+ll.pushBack(40)
+ll.pushBack(50)
+ll.pushBack(60)
+
 ll.print_linkedList()
-# ll.popBack()
-# ll.popBack()
-# print("___")
-# ll.print_linkedList()
-
-
